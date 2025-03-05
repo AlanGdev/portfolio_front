@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 import Header from './components/header';
 import Footer from './components/footer';
 import Accueil from './pages/accueil';
@@ -10,6 +11,18 @@ import Contact from './pages/contact';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) setIsAuthenticated(true);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsAuthenticated(false);
+  };
+
   return (
     <div
       className={
@@ -20,6 +33,13 @@ function App() {
     >
       <Router>
         <Header darkMode={darkMode} setDarkMode={setDarkMode} />
+        {isAuthenticated && (
+          <div className="text-center mt-3">
+            <Button variant="danger" onClick={handleLogout}>
+              Se Déconnecter
+            </Button>
+          </div>
+        )}
         <Routes>
           <Route path="/" element={<Accueil />} />
           <Route path="/apropos" element={<Apropos />} />
@@ -27,7 +47,7 @@ function App() {
           <Route path="/projets/:id" element={<Projet />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
-        <Footer />
+        <Footer onLogin={() => setIsAuthenticated(true)} />
       </Router>
     </div>
   );
