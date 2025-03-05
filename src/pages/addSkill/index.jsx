@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const AddSkill = () => {
   const [nom, setNom] = useState('');
@@ -13,12 +14,18 @@ const AddSkill = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
 
     const token = localStorage.getItem('token');
+    if (!token) {
+      setError('Vous devez être authentifié pour ajouter une compétence.');
+      return;
+    }
 
     try {
       const response = await fetch('http://localhost:4000/api/skills', {
@@ -47,6 +54,10 @@ const AddSkill = () => {
       setDescription('');
       setTechnologies([]);
       setProjetsAssocies([]);
+
+      setTimeout(() => {
+        navigate('/admin');
+      }, 2000);
     } catch (err) {
       setError(err.message || "Erreur lors de l'ajout");
     }
