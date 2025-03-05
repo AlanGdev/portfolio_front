@@ -10,6 +10,8 @@ const AddProject = () => {
   const [lienDemo, setLienDemo] = useState('');
   const [technologies, setTechnologies] = useState([]);
   const [newTech, setNewTech] = useState('');
+  const [image, setImage] = useState(null);
+  const [imagesDetail, setImagesDetail] = useState([]);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -26,21 +28,23 @@ const AddProject = () => {
       return;
     }
 
+    const formData = new FormData();
+    formData.append('nom', nom);
+    formData.append('description', description);
+    formData.append('categorie', categorie);
+    formData.append('lien_github', lienGithub);
+    formData.append('lien_demo', lienDemo);
+    formData.append('image', image);
+    technologies.forEach((tech) => formData.append('technologies', tech));
+    imagesDetail.forEach((img) => formData.append('images_detail', img));
+
     try {
       const response = await fetch('http://localhost:4000/api/projects', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          nom,
-          description,
-          categorie,
-          lien_github: lienGithub,
-          lien_demo: lienDemo,
-          technologies,
-        }),
+        body: formData,
       });
 
       const data = await response.json();
@@ -53,6 +57,8 @@ const AddProject = () => {
       setLienGithub('');
       setLienDemo('');
       setTechnologies([]);
+      setImage(null);
+      setImagesDetail([]);
 
       setTimeout(() => {
         navigate('/admin');
@@ -63,16 +69,18 @@ const AddProject = () => {
   };
 
   const handleAddTechnology = () => {
-    if (newTech.trim() != '') {
+    if (newTech.trim() !== '') {
       setTechnologies([...technologies, newTech.trim()]);
+      setNewTech('');
     }
   };
+
   return (
     <Container className="mt-4">
       <h2 className="text-center">Ajouter un Projet</h2>
       {error && <Alert variant="danger">{error}</Alert>}
       {success && <Alert variant="success">{success}</Alert>}
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} encType="multipart/form-data">
         <Form.Group className="mb-3">
           <Form.Label>Nom du projet</Form.Label>
           <Form.Control
@@ -151,6 +159,28 @@ const AddProject = () => {
           </ul>
         </Form.Group>
 
+        <Form.Group className="mb-3">
+          <Form.Label>Image principale du projet</Form.Label>
+          <Form.Control
+            type="file"
+            accept="image/*"
+            onChange={(e) => setImage(e.target.files[0])}
+            required
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>Images de détail</Form.Label>
+          <Form.Control
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={(e) =>
+              setImagesDetail([...imagesDetail, ...e.target.files])
+            }
+          />
+        </Form.Group>
+
         <Button variant="primary" type="submit">
           Ajouter le Projet
         </Button>
@@ -158,4 +188,5 @@ const AddProject = () => {
     </Container>
   );
 };
+
 export default AddProject;

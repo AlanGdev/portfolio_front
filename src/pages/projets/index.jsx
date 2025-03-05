@@ -34,22 +34,32 @@ function Projets() {
         {projets.map((projet) => (
           <Col md={4} key={projet._id} className="mb-4">
             <Card
-              className="card-hover shadow-sm"
+              className="h-100 card-hover shadow-sm"
               onClick={() => navigate(`/projets/${projet._id}`)}
               style={{ cursor: 'pointer' }}
             >
               {projet.image && (
-                <Card.Img variant="top" src={projet.image} alt={projet.nom} />
+                <Card.Img
+                  variant="top"
+                  src={projet.image}
+                  alt={projet.nom}
+                  className="img-fluid object-fit-cover"
+                  style={{ height: '200px' }}
+                />
               )}
-              <Card.Body>
-                <Card.Title>{projet.nom}</Card.Title>
-                <Card.Text>{projet.description}</Card.Text>
-                <div className="mb-2">
-                  <strong>Catégorie :</strong> {projet.categorie}
+              <Card.Body className="d-flex flex-column">
+                <div>
+                  <Card.Title>{projet.nom}</Card.Title>
+                  <Card.Text>{projet.description}</Card.Text>
                 </div>
-                <div className="mb-2">
-                  <strong>Technologies :</strong>{' '}
-                  {projet.technologies.join(', ')}
+                <div className="mt-auto">
+                  <div className="mb-2">
+                    <strong>Catégorie :</strong> {projet.categorie}
+                  </div>
+                  <div className="mb-2">
+                    <strong>Technologies :</strong>{' '}
+                    {projet.technologies.join(', ')}
+                  </div>
                 </div>
               </Card.Body>
             </Card>
