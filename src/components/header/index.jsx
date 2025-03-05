@@ -3,15 +3,16 @@ import { Container, Button } from 'react-bootstrap';
 function Header({ darkMode, setDarkMode }) {
   return (
     <header className={darkMode ? 'bg-dark text-light' : 'bg-light text-dark'}>
-      <Navbarre darkMode={darkMode} />
       <Container className="text-center mt-3">
         <Button
           onClick={() => setDarkMode(!darkMode)}
           variant={darkMode ? 'light' : 'dark'}
+          className="w-100"
         >
-          {darkMode ? 'Mode Clair' : 'Mode Sombre'}
+          {darkMode ? 'Passer en Mode Clair' : 'Passer en Mode Sombre'}
         </Button>
       </Container>
+      <Navbarre darkMode={darkMode} />
     </header>
   );
 }

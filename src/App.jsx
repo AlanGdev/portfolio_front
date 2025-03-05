@@ -61,7 +61,7 @@ function App() {
             </>
           )}
         </Routes>
-        <Footer onLogin={() => setIsAuthenticated(true)} />
+        <Footer onLogin={() => setIsAuthenticated(true)} darkMode={darkMode} />
       </Router>
     </div>
   );
