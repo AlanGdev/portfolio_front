@@ -8,6 +8,8 @@ import Apropos from './pages/apropos';
 import Projets from './pages/projets';
 import Projet from './pages/projet';
 import Contact from './pages/contact';
+import Admin from './pages/admin';
+import AddSkill from './pages/addSkill';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -15,6 +17,7 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    console.log('Token:', token);
     if (token) setIsAuthenticated(true);
   }, []);
 
@@ -46,6 +49,15 @@ function App() {
           <Route path="/projets" element={<Projets />} />
           <Route path="/projets/:id" element={<Projet />} />
           <Route path="/contact" element={<Contact />} />
+          {isAuthenticated && (
+            <>
+              <Route
+                path="/admin"
+                element={<Admin isAuthenticated={isAuthenticated} />}
+              />
+              <Route path="/admin/add-skill" element={<AddSkill />} />
+            </>
+          )}
         </Routes>
         <Footer onLogin={() => setIsAuthenticated(true)} />
       </Router>

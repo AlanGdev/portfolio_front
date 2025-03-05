@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const AuthModal = ({ show, handleClose, onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -27,6 +29,7 @@ const AuthModal = ({ show, handleClose, onLogin }) => {
       localStorage.setItem('token', data.token);
       onLogin();
       handleClose();
+      navigate('/admin');
     } catch (err) {
       console.error('Erreur détectée :', err.message);
       setError(err.message);
