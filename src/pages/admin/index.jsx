@@ -19,10 +19,13 @@ const Admin = ({ isAuthenticated }) => {
           Ajouter une compétence
         </Button>
         <Button
-          variant="success"
+          variant="primary"
           onClick={() => navigate('/admin/add-project')}
         >
           Ajouter un projet
+        </Button>
+        <Button variant="primary" onClick={() => navigate('/admin/add-techno')}>
+          Ajouter une techno
         </Button>
       </div>
     </Container>
