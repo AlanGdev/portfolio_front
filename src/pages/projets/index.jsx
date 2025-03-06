@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, Spinner, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import './index.css';
 
-function Projets() {
+function Projets({ darkMode }) {
   const [error, setError] = useState('');
   const [projets, setProjets] = useState([]);
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ function Projets() {
         {projets.map((projet) => (
           <Col md={4} key={projet._id} className="mb-4">
             <Card
-              className="h-100 card-hover shadow-sm"
+              className={`h-100 card-hover shadow-sm ${darkMode ? 'bg-dark text-light' : 'bg-light text-dark'}`}
               onClick={() => navigate(`/projets/${projet._id}`)}
               style={{ cursor: 'pointer' }}
             >
@@ -43,23 +43,20 @@ function Projets() {
                   variant="top"
                   src={projet.image}
                   alt={projet.nom}
-                  className="img-fluid object-fit-cover"
-                  style={{ height: '200px' }}
+                  className=" img-fluid object-fit-cover"
+                  style={{
+                    width: '100%',
+                    height: '200px',
+                    objectPosition: 'top',
+                  }}
                 />
               )}
               <Card.Body className="d-flex flex-column">
                 <div>
                   <Card.Title>{projet.nom}</Card.Title>
-                  <Card.Text>{projet.description}</Card.Text>
                 </div>
-                <div className="mt-auto">
-                  <div className="mb-2">
-                    <strong>Catégorie :</strong> {projet.categorie}
-                  </div>
-                  <div className="mb-2">
-                    <strong>Technologies :</strong>{' '}
-                    {projet.technologies.join(', ')}
-                  </div>
+                <div>
+                  <strong>Catégorie :</strong> {projet.categorie}
                 </div>
               </Card.Body>
             </Card>

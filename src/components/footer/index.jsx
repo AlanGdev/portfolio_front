@@ -9,11 +9,7 @@ const Footer = ({ onLogin, darkMode }) => {
   const [showModal, setShowModal] = useState(false);
   return (
     <footer
-      className="text-center py-3"
-      style={{
-        backgroundColor: darkMode ? '#343a40' : '#f8f9fa',
-        color: darkMode ? '#fff' : '#000',
-      }}
+      className={`text-center py-3 ${darkMode ? 'bg-dark text-light' : 'bg-light text dark'}`}
     >
       <FontAwesomeIcon icon={faLinkedin} />
 

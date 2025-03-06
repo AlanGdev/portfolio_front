@@ -35,10 +35,17 @@ function Projet() {
 
   return (
     <Container className="mt-4">
-      <h2 className="text-center mb-4">{projet.nom}</h2>
+      <h2 className="text-center mb-4">Projet {projet.nom}</h2>
       <Card className="shadow-sm">
         {projet.image && (
-          <Card.Img variant="top" src={projet.image} alt={projet.nom} />
+          <div className="overflow-auto" style={{ maxHeight: '400px' }}>
+            <Card.Img
+              variant="top"
+              src={projet.image}
+              alt={projet.nom}
+              className="object-fit-cover "
+            />
+          </div>
         )}
         <Card.Body>
           <Card.Text>{projet.description}</Card.Text>

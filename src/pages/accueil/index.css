@@ -1,14 +1,10 @@
-.card img {
-  max-height: 80px;
-  object-fit: contain;
-}
 .technology-card {
-  max-width: 300px; /* Largeur maximale pour éviter que la carte soit trop large */
-  margin: 0 auto; /* Centre les cartes dans leur colonne */
+  max-width: 300px;
+  margin: 0 auto;
 }
 
 .technology-card img {
-  max-width: 100px; /* Limite la taille de l’image */
+  max-width: 100px;
   height: auto;
 }
 

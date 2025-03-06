@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Container, Row, Col, Card, Alert } from 'react-bootstrap';
 import './index.css'; // Assurez-vous que le fichier CSS est bien importé
 
-function Accueil() {
+function Accueil({ darkMode }) {
   const [technologies, setTechnologies] = useState([]);
   const [error, setError] = useState('');
 
@@ -40,8 +40,10 @@ function Accueil() {
 
       {Object.keys(domaines).map((domaine) => (
         <div key={domaine} className="mb-4">
-          <h3 className="text-primary">{domaine}</h3>
-          <Row className="justify-content-center">
+          <h3 className={`${darkMode ? 'text-light' : 'text-dark'}`}>
+            {domaine}
+          </h3>
+          <Row className="justify-content-start">
             {domaines[domaine].map((tech) => (
               <Col
                 md="auto"
@@ -50,14 +52,17 @@ function Accueil() {
                 key={tech._id}
                 className="mb-3"
               >
-                <Card className="technology-card text-center shadow-sm">
+                <Card
+                  className={`technology-card h-100 text-center shadow-sm ${darkMode ? 'bg-secondary text-light border-light' : 'bg-light text-dark border-dark'}`}
+                >
                   <Card.Img
                     variant="top"
                     src={tech.image}
                     alt={tech.nom}
-                    className="p-3"
+                    className="h-100 p-1 mx-auto"
+                    style={{ maxHeight: '100px', objectFit: 'contain' }}
                   />
-                  <Card.Body>
+                  <Card.Body className="d-none d-md-block px-1 py-0">
                     <Card.Title>{tech.nom}</Card.Title>
                   </Card.Body>
                 </Card>

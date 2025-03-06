@@ -46,9 +46,9 @@ function App() {
           </div>
         )}
         <Routes>
-          <Route path="/" element={<Accueil />} />
+          <Route path="/" element={<Accueil darkMode={darkMode} />} />
           <Route path="/apropos" element={<Apropos />} />
-          <Route path="/projets" element={<Projets />} />
+          <Route path="/projets" element={<Projets darkMode={darkMode} />} />
           <Route path="/projets/:id" element={<Projet />} />
           <Route path="/contact" element={<Contact />} />
           {isAuthenticated && (
