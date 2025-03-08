@@ -6,7 +6,7 @@ function Header({ darkMode, setDarkMode }) {
       <Container className="text-center mt-3">
         <Button
           onClick={() => setDarkMode(!darkMode)}
-          variant={darkMode ? 'light' : 'dark'}
+          variant={darkMode ? 'outline-light' : 'outline-dark'}
           className="w-100"
         >
           {darkMode ? 'Passer en Mode Clair' : 'Passer en Mode Sombre'}
