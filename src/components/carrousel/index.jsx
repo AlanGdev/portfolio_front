@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Carousel } from 'react-bootstrap';
+const API_URL = import.meta.env.VITE_API_URL;
+
 function accueilCarousel() {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/projects');
+        const response = await fetch(`${API_URL}/api/projects`);
         if (!response.ok) {
           throw new Error('Erreur lors de la récupération des projets');
         }

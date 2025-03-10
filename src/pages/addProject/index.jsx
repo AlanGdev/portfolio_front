@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Form, Button, Alert, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const AddProject = () => {
   const [nom, setNom] = useState('');
@@ -39,7 +40,7 @@ const AddProject = () => {
     imagesDetail.forEach((img) => formData.append('images_detail', img));
 
     try {
-      const response = await fetch('http://localhost:4000/api/projects', {
+      const response = await fetch(`${API_URL}/api/projects`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,

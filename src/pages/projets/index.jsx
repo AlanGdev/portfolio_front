@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Container, Row, Col, Card, Spinner, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import './index.css';
+const API_URL = import.meta.env.VITE_API_URL;
 
 function Projets({ darkMode }) {
   const [error, setError] = useState('');
@@ -11,7 +12,7 @@ function Projets({ darkMode }) {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/projects');
+        const response = await fetch(`${API_URL}/api/projects`);
         if (!response.ok) {
           throw new Error('Erreur lors de la récupération des projets');
         }

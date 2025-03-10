@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Form, Button, Alert, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const AddTechnology = () => {
   const [nom, setNom] = useState('');
@@ -33,7 +34,7 @@ const AddTechnology = () => {
     formData.append('domaine', domaine);
 
     try {
-      const response = await fetch('http://localhost:4000/api/techno', {
+      const response = await fetch(`${API_URL}/api/techno`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,

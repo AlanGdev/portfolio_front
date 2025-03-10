@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Alert, Card, Button } from 'react-bootstrap';
+const API_URL = import.meta.env.VITE_API_URL;
 
 function Projet() {
   const { id } = useParams();
@@ -12,7 +13,7 @@ function Projet() {
     const fetchProjet = async () => {
       try {
         const response = await fetch(
-          `http://localhost:4000/api/projects/${id}`
+          `${API_URL}/api/projects/${id}`
         );
         if (!response.ok) {
           throw new Error('Projet non trouvé');

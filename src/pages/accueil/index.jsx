@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Container, Row, Col, Card, Alert } from 'react-bootstrap';
 import './index.css'; // Assurez-vous que le fichier CSS est bien importé
+const API_URL = import.meta.env.VITE_API_URL;
 
 function Accueil({ darkMode }) {
   const [technologies, setTechnologies] = useState([]);
@@ -9,11 +10,12 @@ function Accueil({ darkMode }) {
   useEffect(() => {
     const fetchTechnologies = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/techno');
+        const response = await fetch(`${API_URL}/api/techno`);
         if (!response.ok) {
           throw new Error('Erreur lors de la récupération des technologies');
         }
         const data = await response.json();
+        console.log("🔍 Données reçues de l'API :", data);
         setTechnologies(data);
       } catch (err) {
         setError(err.message);
