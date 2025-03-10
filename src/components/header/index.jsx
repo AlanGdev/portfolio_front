@@ -3,7 +3,7 @@ import { Container, Button } from 'react-bootstrap';
 function Header({ darkMode, setDarkMode }) {
   return (
     <header className={darkMode ? 'bg-dark text-light' : 'bg-light text-dark'}>
-      <Container className="text-center mt-3">
+      <Container className="text-center pt-3">
         <Button
           onClick={() => setDarkMode(!darkMode)}
           variant={darkMode ? 'outline-light' : 'outline-dark'}
