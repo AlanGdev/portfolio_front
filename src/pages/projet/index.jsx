@@ -8,20 +8,22 @@ function Projet() {
   console.log(id);
   const [projet, setProjet] = useState(null);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProjet = async () => {
       try {
-        const response = await fetch(
-          `${API_URL}/api/projects/${id}`
-        );
+        const response = await fetch(`${API_URL}/api/projects/${id}`);
         if (!response.ok) {
           throw new Error('Projet non trouvé');
         }
         console.log('réponse reçue getOne project');
         const data = await response.json();
+        setLoading(false);
         setProjet(data);
       } catch (err) {
+        setLoading(false);
+
         setError(err.message);
       }
     };
@@ -37,6 +39,11 @@ function Projet() {
   return (
     <Container className="mt-4">
       <h2 className="text-center mb-4">Projet {projet.nom}</h2>
+      {loading && (
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      )}
       <Card className="shadow-sm">
         {projet.image && (
           <div className="overflow-auto" style={{ maxHeight: '400px' }}>

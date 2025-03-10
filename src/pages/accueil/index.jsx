@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Container, Row, Col, Card, Alert } from 'react-bootstrap';
-import './index.css'; // Assurez-vous que le fichier CSS est bien importé
+import { Container, Row, Col, Card, Alert, Spinner } from 'react-bootstrap';
+import './index.css';
 const API_URL = import.meta.env.VITE_API_URL;
 
 function Accueil({ darkMode }) {
   const [technologies, setTechnologies] = useState([]);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchTechnologies = async () => {
@@ -15,9 +16,11 @@ function Accueil({ darkMode }) {
           throw new Error('Erreur lors de la récupération des technologies');
         }
         const data = await response.json();
+        setLoading(false);
         console.log("🔍 Données reçues de l'API :", data);
         setTechnologies(data);
       } catch (err) {
+        setLoading(false);
         setError(err.message);
       }
     };
@@ -37,6 +40,11 @@ function Accueil({ darkMode }) {
   return (
     <Container className="mt-4">
       <h2 className="text-center mb-4">Technologies utilisées</h2>
+      {loading && (
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      )}
 
       {error && <Alert variant="danger">{error}</Alert>}
 

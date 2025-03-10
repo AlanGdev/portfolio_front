@@ -7,6 +7,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 function Projets({ darkMode }) {
   const [error, setError] = useState('');
   const [projets, setProjets] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,8 +18,10 @@ function Projets({ darkMode }) {
           throw new Error('Erreur lors de la récupération des projets');
         }
         const data = await response.json();
+        setLoading(false);
         setProjets(data);
       } catch (err) {
+        setLoading(false);
         setError(err.message);
       }
     };
@@ -28,7 +31,11 @@ function Projets({ darkMode }) {
   return (
     <Container className="mt-4">
       <h2 className="text-center mb-4">Mes Projets</h2>
-
+      {loading && (
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      )}
       {error && <Alert variant="danger">{error}</Alert>}
 
       <Row>
