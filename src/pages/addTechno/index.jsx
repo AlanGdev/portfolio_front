@@ -94,7 +94,8 @@ const AddTechnology = () => {
             <option value="">Sélectionner un domaine</option>
             <option value="Front-End">Front-End</option>
             <option value="Back-End">Back-End</option>
-            <option value="Full-Stack">Full-Stack</option>
+            <option value="Bases de données">Bases de données</option>
+            <option value="Outils & Workflow">Outils & Workflow</option>
           </Form.Select>
         </Form.Group>
 
