@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import AuthModal from '../authmodal';
 
-const Footer = ({ onLogin, darkMode }) => {
+const Footer = ({ onLogin, darkMode, isAuthenticated }) => {
   const [showModal, setShowModal] = useState(false);
   return (
     <footer
@@ -25,9 +25,11 @@ const Footer = ({ onLogin, darkMode }) => {
         <span> 2025 Grolleau. Tous droits réservés</span>
         <div>
           <Link
-            to="#"
+            to={isAuthenticated ? '/admin' : '#'}
             className={`text-decoration-none ${darkMode ? 'text-light' : 'text-dark'}`}
-            onClick={() => setShowModal(true)}
+            onClick={() => {
+              if (!isAuthenticated) setShowModal(true);
+            }}
           >
             Admin
           </Link>

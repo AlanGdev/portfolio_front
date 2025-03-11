@@ -1,103 +1,79 @@
-import { useState } from 'react';
-import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-const API_URL = import.meta.env.VITE_API_URL;
+import React, { useState, useEffect } from 'react';
+import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 
 const AddSkill = () => {
-  const [nom, setNom] = useState('');
   const [categorie, setCategorie] = useState('');
-  const [niveau, setNiveau] = useState('');
-  const [description, setDescription] = useState('');
-  const [technologies, setTechnologies] = useState([]);
-  const [projetNom, setProjetNom] = useState('');
-  const [projetLien, setProjetLien] = useState('');
-  const [projetsAssocies, setProjetsAssocies] = useState([]);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [skills, setSkills] = useState(['']);
+  const [projets, setProjets] = useState([]);
+  const [selectedProjets, setSelectedProjets] = useState([]);
+  const API_URL = import.meta.env.VITE_API_URL;
 
-  const navigate = useNavigate();
+  // Récupérer la liste des projets depuis l'API avec Fetch
+  useEffect(() => {
+    fetch(`${API_URL}/api/projects`)
+      .then((response) => response.json())
+      .then((data) => setProjets(data))
+      .catch((error) =>
+        console.error('Erreur lors de la récupération des projets', error)
+      );
+  }, []);
 
+  // Ajouter un champ pour une nouvelle compétence
+  const addSkillField = () => {
+    setSkills([...skills, '']);
+  };
+
+  // Supprimer un champ de compétence
+  const removeSkillField = (index) => {
+    const newSkills = [...skills];
+    newSkills.splice(index, 1);
+    setSkills(newSkills);
+  };
+
+  // Mettre à jour une compétence dans le tableau
+  const handleSkillChange = (index, value) => {
+    const newSkills = [...skills];
+    newSkills[index] = value;
+    setSkills(newSkills);
+  };
+
+  // Soumission du formulaire
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
 
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setError('Vous devez être authentifié pour ajouter une compétence.');
-      return;
-    }
+    const newSkill = {
+      categorie,
+      skills,
+      projets: selectedProjets,
+    };
 
     try {
-      const response = await fetch(`${API_URL}/api/skills`, {
+      const response = await fetch(`${API_URL}/api/projects`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          nom,
-          categorie,
-          niveau,
-          description,
-          technologies,
-          projets_associes: projetsAssocies,
-        }),
+        body: JSON.stringify(newSkill),
       });
 
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message);
+      if (!response.ok)
+        throw new Error("Erreur lors de l'ajout de la compétence");
 
-      setSuccess('Compétence ajoutée avec succès !');
-      setNom('');
+      alert('Compétence ajoutée avec succès !');
       setCategorie('');
-      setNiveau('');
-      setDescription('');
-      setTechnologies([]);
-      setProjetsAssocies([]);
-
-      setTimeout(() => {
-        navigate('/admin');
-      }, 2000);
-    } catch (err) {
-      setError(err.message || "Erreur lors de l'ajout");
-    }
-  };
-
-  const handleAddTechnology = (e) => {
-    if (e.key === 'Enter' && e.target.value.trim() !== '') {
-      setTechnologies([...technologies, e.target.value.trim()]);
-      e.target.value = '';
-    }
-  };
-
-  const handleAddProjet = () => {
-    if (projetNom.trim() && projetLien.trim()) {
-      setProjetsAssocies([
-        ...projetsAssocies,
-        { nom: projetNom, lien_github: projetLien },
-      ]);
-      setProjetNom('');
-      setProjetLien('');
+      setSkills(['']);
+      setSelectedProjets([]);
+    } catch (error) {
+      console.error(error);
+      alert("Échec de l'ajout de la compétence.");
     }
   };
 
   return (
     <Container className="mt-4">
-      <h2 className="text-center">Ajouter une Compétence</h2>
-      {error && <Alert variant="danger">{error}</Alert>}
-      {success && <Alert variant="success">{success}</Alert>}
+      <h2>Ajouter une Compétence</h2>
       <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3">
-          <Form.Label>Nom de la compétence</Form.Label>
-          <Form.Control
-            type="text"
-            value={nom}
-            onChange={(e) => setNom(e.target.value)}
-            required
-          />
-        </Form.Group>
-
+        {/* Catégorie */}
         <Form.Group className="mb-3">
           <Form.Label>Catégorie</Form.Label>
           <Form.Select
@@ -106,91 +82,79 @@ const AddSkill = () => {
             required
           >
             <option value="">Sélectionner une catégorie</option>
-            <option value="Front-End">Front-End</option>
-            <option value="Back-End">Back-End</option>
-            <option value="Outils & Workflow">Outils & Workflow</option>
+            <option value="Intégration Web">Intégration Web</option>
+            <option value="Développement Front-end">
+              Développement Front-end
+            </option>
+            <option value="Développement Back-end">
+              Développement Back-end
+            </option>
+            <option value="Gestion de projets & Outils">
+              Gestion de projets & Outils
+            </option>
+            <option value="Optimisation & Debug">Optimisation & Debug</option>
+            <option value="Publication & Déploiement">
+              Publication & Déploiement
+            </option>
+            <option value="Prochaines compétences à développer">
+              Prochaines compétences à développer
+            </option>
           </Form.Select>
         </Form.Group>
 
+        {/* Sous-compétences (Skills) */}
         <Form.Group className="mb-3">
-          <Form.Label>Niveau</Form.Label>
-          <Form.Select
-            value={niveau}
-            onChange={(e) => setNiveau(e.target.value)}
-            required
-          >
-            <option value="">Sélectionner un niveau</option>
-            <option value="Débutant">Débutant</option>
-            <option value="Intermédiaire">Intermédiaire</option>
-            <option value="Avancé">Avancé</option>
-          </Form.Select>
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Description</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Technologies (Ajoutez avec Entrée)</Form.Label>
-          <Form.Control
-            type="text"
-            onKeyDown={handleAddTechnology}
-            placeholder="Ajoutez une technologie..."
-          />
-          <ul className="mt-2">
-            {technologies.map((tech, index) => (
-              <li key={index}>{tech}</li>
-            ))}
-          </ul>
-        </Form.Group>
-
-        <h5>Projets Associés</h5>
-        <Row>
-          <Col md={5}>
-            <Form.Control
-              type="text"
-              placeholder="Nom du projet"
-              value={projetNom}
-              onChange={(e) => setProjetNom(e.target.value)}
-            />
-          </Col>
-          <Col md={5}>
-            <Form.Control
-              type="text"
-              placeholder="Lien GitHub"
-              value={projetLien}
-              onChange={(e) => setProjetLien(e.target.value)}
-            />
-          </Col>
-          <Col md={2}>
-            <Button variant="success" onClick={handleAddProjet}>
-              +
-            </Button>
-          </Col>
-        </Row>
-        <ul className="mt-2">
-          {projetsAssocies.map((projet, index) => (
-            <li key={index}>
-              {projet.nom} -{' '}
-              <a
-                href={projet.lien_github}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {projet.lien_github}
-              </a>
-            </li>
+          <Form.Label>Compétences</Form.Label>
+          {skills.map((skill, index) => (
+            <Row key={index} className="mb-2">
+              <Col>
+                <Form.Control
+                  type="text"
+                  value={skill}
+                  onChange={(e) => handleSkillChange(index, e.target.value)}
+                  placeholder="Ex: Utiliser React Router"
+                  required
+                />
+              </Col>
+              <Col xs="auto">
+                {index > 0 && (
+                  <Button
+                    variant="danger"
+                    onClick={() => removeSkillField(index)}
+                  >
+                    Supprimer
+                  </Button>
+                )}
+              </Col>
+            </Row>
           ))}
-        </ul>
+          <Button variant="primary" onClick={addSkillField}>
+            + Ajouter une compétence
+          </Button>
+        </Form.Group>
 
-        <Button variant="primary" type="submit" className="mt-3">
+        {/* Sélection des projets */}
+        <Form.Group className="mb-3">
+          <Form.Label>Associer à des projets</Form.Label>
+          <Form.Select
+            multiple
+            value={selectedProjets}
+            onChange={(e) =>
+              setSelectedProjets(
+                [...e.target.selectedOptions].map((opt) => opt.value)
+              )
+            }
+          >
+            {projets.map((projet) => (
+              <option key={projet._id} value={projet._id}>
+                {projet.nom}
+              </option>
+            ))}
+          </Form.Select>
+        </Form.Group>
+
+        {/* Bouton de soumission */}
+        <Button variant="success" type="submit">
           Ajouter la Compétence
         </Button>
       </Form>

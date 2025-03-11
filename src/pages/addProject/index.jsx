@@ -208,7 +208,7 @@ const AddProject = () => {
             >
               <option value="">Sélectionner une technologie</option>
               {datas.map((data) => (
-                <option key={data.nom} value={data.nom}>
+                <option key={data._id} value={data._id}>
                   {data.nom}
                 </option>
               ))}
