@@ -1,5 +1,14 @@
-import { useState } from 'react';
-import { Form, Button, Alert, Container } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
+import {
+  Form,
+  Button,
+  Alert,
+  Container,
+  FormGroup,
+  FormLabel,
+  FormControl,
+  FormSelect,
+} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -11,12 +20,35 @@ const AddProject = () => {
   const [lienDemo, setLienDemo] = useState('');
   const [technologies, setTechnologies] = useState([]);
   const [newTech, setNewTech] = useState('');
+  const [problematics, setProblematics] = useState([]);
+  const [newProb, setNewProb] = useState('');
   const [image, setImage] = useState(null);
   const [imagesDetail, setImagesDetail] = useState([]);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [datas, setDatas] = useState([]);
 
   const navigate = useNavigate();
+
+  const getTechnos = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/techno/`);
+      console.log('status réponse: ', response.status);
+      if (!response.ok) {
+        setError('Problème dans la récupération des technologies');
+        return;
+      }
+      const data = await response.json();
+      setDatas(data);
+      console.log(data);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  useEffect(() => {
+    getTechnos();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,7 +81,9 @@ const AddProject = () => {
       });
 
       const data = await response.json();
-      if (!response.ok) throw new Error(data.message);
+      if (!response.ok) {
+        throw new Error(data.message || 'une erreur est survenue');
+      }
 
       setSuccess('Projet ajouté avec succès!');
       setNom('');
@@ -73,6 +107,12 @@ const AddProject = () => {
     if (newTech.trim() !== '') {
       setTechnologies([...technologies, newTech.trim()]);
       setNewTech('');
+    }
+  };
+  const handleAddProblematic = () => {
+    if (newProb.trim() !== '') {
+      setProblematics([...problematics, newProb.trim()]);
+      setNewProb('');
     }
   };
 
@@ -135,16 +175,45 @@ const AddProject = () => {
             onChange={(e) => setLienDemo(e.target.value)}
           />
         </Form.Group>
+        <FormGroup className="mb-3">
+          <FormLabel>Problématiques & solutions</FormLabel>
+          <div className="d-flex">
+            <FormControl
+              type="text"
+              placeholder="Problématique & solution apportée"
+              value={newProb}
+              onChange={(e) => setNewProb(e.target.value)}
+            />
+            <Button
+              variant="success"
+              className="ms-2"
+              onClick={handleAddProblematic}
+            >
+              +
+            </Button>
+          </div>
+          <ul className="mt-2">
+            {problematics.map((problematic, index) => (
+              <li key={index}>{problematic}</li>
+            ))}
+          </ul>
+        </FormGroup>
 
         <Form.Group className="mb-3">
           <Form.Label>Technologies utilisées</Form.Label>
           <div className="d-flex">
-            <Form.Control
-              type="text"
-              placeholder="Ajouter une technologie"
+            <Form.Select
               value={newTech}
               onChange={(e) => setNewTech(e.target.value)}
-            />
+            >
+              <option value="">Sélectionner une technologie</option>
+              {datas.map((data) => (
+                <option key={data.nom} value={data.nom}>
+                  {data.nom}
+                </option>
+              ))}
+            </Form.Select>
+
             <Button
               variant="success"
               className="ms-2"
