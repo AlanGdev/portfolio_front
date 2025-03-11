@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { Form, Button, Container, Alert } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const AddSkill = () => {
   const [categorie, setCategorie] = useState('');
-  const [skills, setSkills] = useState(['']);
+  const [skills, setSkills] = useState([]);
+  const [newSkill, setNewSkill] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [projets, setProjets] = useState([]);
   const [selectedProjets, setSelectedProjets] = useState([]);
   const API_URL = import.meta.env.VITE_API_URL;
 
-  // Récupérer la liste des projets depuis l'API avec Fetch
+  const navigate = useNavigate();
+
   useEffect(() => {
     fetch(`${API_URL}/api/projects`)
       .then((response) => response.json())
@@ -18,60 +23,66 @@ const AddSkill = () => {
       );
   }, []);
 
-  // Ajouter un champ pour une nouvelle compétence
-  const addSkillField = () => {
-    setSkills([...skills, '']);
-  };
-
-  // Supprimer un champ de compétence
-  const removeSkillField = (index) => {
-    const newSkills = [...skills];
-    newSkills.splice(index, 1);
-    setSkills(newSkills);
-  };
-
-  // Mettre à jour une compétence dans le tableau
-  const handleSkillChange = (index, value) => {
-    const newSkills = [...skills];
-    newSkills[index] = value;
-    setSkills(newSkills);
-  };
+  const handleAddSkill=()=>{
+    if (newSkill.trim() !==''){
+      setSkills([...skills,newSkill.trim()])
+      setNewSkill('')
+    }
+  }
 
   // Soumission du formulaire
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setSuccess('');
 
-    const newSkill = {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setError('Vous devez être authentifié pour ajouter un projet.');
+      return;
+    }
+
+    const newCompetence = {
       categorie,
       skills,
       projets: selectedProjets,
     };
 
     try {
-      const response = await fetch(`${API_URL}/api/projects`, {
+      console.log (newCompetence)
+      const response = await fetch(`${API_URL}/api/skills`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+
         },
-        body: JSON.stringify(newSkill),
+        body: JSON.stringify(newCompetence),
       });
 
-      if (!response.ok)
-        throw new Error("Erreur lors de l'ajout de la compétence");
+      const data=await response.json()
+      if (!response.ok){
+        throw new Error(data.message||"Erreur lors de l'ajout de la compétence");}
 
-      alert('Compétence ajoutée avec succès !');
+      setSuccess('Compétence ajoutée avec succès !');
       setCategorie('');
-      setSkills(['']);
+      setSkills([]);
       setSelectedProjets([]);
+      setTimeout(() => {
+        navigate('/admin');
+      },2000)
+
     } catch (error) {
-      console.error(error);
-      alert("Échec de l'ajout de la compétence.");
+      setError(err.message || "Erreur lors de l'ajout");
     }
   };
 
   return (
     <Container className="mt-4">
       <h2>Ajouter une Compétence</h2>
+      {error && <Alert variant="danger">{error}</Alert>}
+      {success && <Alert variant="success">{success}</Alert>}
+
       <Form onSubmit={handleSubmit}>
         {/* Catégorie */}
         <Form.Group className="mb-3">
@@ -105,32 +116,22 @@ const AddSkill = () => {
         {/* Sous-compétences (Skills) */}
         <Form.Group className="mb-3">
           <Form.Label>Compétences</Form.Label>
-          {skills.map((skill, index) => (
-            <Row key={index} className="mb-2">
-              <Col>
+          <div className='d-flex'> 
                 <Form.Control
                   type="text"
-                  value={skill}
-                  onChange={(e) => handleSkillChange(index, e.target.value)}
+                  value={newSkill}
+                  onChange={(e) => setNewSkill(e.target.value)}
                   placeholder="Ex: Utiliser React Router"
-                  required
                 />
-              </Col>
-              <Col xs="auto">
-                {index > 0 && (
-                  <Button
-                    variant="danger"
-                    onClick={() => removeSkillField(index)}
-                  >
-                    Supprimer
-                  </Button>
-                )}
-              </Col>
-            </Row>
-          ))}
-          <Button variant="primary" onClick={addSkillField}>
-            + Ajouter une compétence
+          <Button variant="success" onClick={handleAddSkill}>
+            +
           </Button>
+          </div>
+          <ul className="mt-2">
+            {skills.map((skill, index) => (
+              <li key={index}>{skill}</li>
+            ))}
+          </ul>
         </Form.Group>
 
         {/* Sélection des projets */}

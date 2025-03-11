@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 const AuthModal = ({ show, handleClose, onLogin }) => {
@@ -12,6 +13,7 @@ const AuthModal = ({ show, handleClose, onLogin }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
+
     try {
       const response = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
@@ -19,23 +21,32 @@ const AuthModal = ({ show, handleClose, onLogin }) => {
         body: JSON.stringify({ email, password }),
       });
 
+      const data = await response.json(); // Stocke directement la réponse JSON
+      console.log('Réponse reçue :', data); // Debug
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Erreur d'authentification");
+        throw new Error(data.message || "Erreur d'authentification");
       }
 
-      const data = await response.json();
-      console.log('Réponse reçue :', data);
+      if (!data.token) {
+        throw new Error("Token non reçu après connexion.");
+      }
 
+      // Stocker le token dans le localStorage
       localStorage.setItem('token', data.token);
+      console.log('Token stocké :', localStorage.getItem('token')); // Vérification
+
+      // Exécuter les actions post-login
       onLogin();
       handleClose();
       navigate('/admin');
+
     } catch (err) {
       console.error('Erreur détectée :', err.message);
       setError(err.message);
     }
   };
+
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>

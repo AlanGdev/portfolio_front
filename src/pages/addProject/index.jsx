@@ -68,8 +68,8 @@ const AddProject = () => {
     formData.append('lien_github', lienGithub);
     formData.append('lien_demo', lienDemo);
     formData.append('image', image);
-    technologies.forEach((tech) => formData.append('technologies', tech));
-    imagesDetail.forEach((img) => formData.append('images_detail', img));
+    formData.append('technologies', JSON.stringify(technologies));
+    formData.append('problematics', JSON.stringify(problematics));
 
     try {
       const response = await fetch(`${API_URL}/api/projects`, {
