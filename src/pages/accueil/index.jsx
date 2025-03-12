@@ -12,7 +12,7 @@ import {
   Button,
 } from 'react-bootstrap';
 import './index.css';
-import imageAlan from '../../assets/alan.webp';
+import imageAlan from '../../assets/alan1.webp';
 const API_URL = import.meta.env.VITE_API_URL;
 
 function Accueil({ darkMode }) {
@@ -88,7 +88,7 @@ function Accueil({ darkMode }) {
                 Développeur web freelance, je conçois des sites et applications
                 modernes, performants et évolutifs. Que ce soit pour un site
                 vitrine, une application métier ou une optimisation SEO, je vous
-                accompagne avec des solutions adaptées à vos besoins
+                accompagne avec des solutions adaptées à vos besoins.
               </p>
               <div className="d-flex justify-content-center">
                 <Button
@@ -112,12 +112,21 @@ function Accueil({ darkMode }) {
       </Container>
 
       <Container>
+        <h2 className='text-center mt-5'> Projets </h2>
+        <Carousel  controls={false} indicators={false} data-bs-theme="dark" interval={3500} className='mt-5'>
         {projets.map((projet) => {
-          <Carousel.Item></Carousel.Item>;
+          return(
+          <Carousel.Item key={projet._id}>
+            <div className='d-flex carousel-item'>
+            <Image src={projet.image} className='mx-auto carousel-img' 
+            onClick={()=>{navigate('/projets')}} />
+            </div>
+          </Carousel.Item>);
         })}
+        </Carousel>
       </Container>
 
-      <Container className="mt-4">
+      <Container className="mt-5">
         <h2 className="text-center mb-4">Technologies utilisées</h2>
         {loading && (
           <div className="spinner-border" role="status">
@@ -129,7 +138,7 @@ function Accueil({ darkMode }) {
 
         {Object.keys(domaines).map((domaine) => (
           <div key={domaine} className="mb-4">
-            <h3 className={`${darkMode ? 'text-light' : 'text-dark'}`}>
+            <h3 className={`${darkMode ? 'text-light mb-4' : 'text-dark mb-4'}`}>
               {domaine}
             </h3>
             <Row className="justify-content-start">

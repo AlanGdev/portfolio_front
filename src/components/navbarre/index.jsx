@@ -9,7 +9,7 @@ function Navbarre({ darkMode }) {
       className={darkMode ? 'navbar-dark bg-dark' : 'navbar-light bg-light'}
     >
       <Container>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="#home" className='fs-3 fw-bold'>
           Alan Grolleau - Developpeur Web
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

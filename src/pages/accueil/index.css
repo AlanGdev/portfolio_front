@@ -4,7 +4,7 @@
 }
 
 .technology-card img {
-  max-width: 100px;
+  max-width: 70px;
   height: auto;
 }
 
@@ -13,6 +13,15 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+}
+.carousel-item{
+  max-height:500px;
+}
+.carousel-img {
+  object-fit: contain;
+  max-height: 400px ;
+  width: 100%;
+  cursor: pointer;
 }
 @media (min-width: 576px) {
   .w-sm-50 {
