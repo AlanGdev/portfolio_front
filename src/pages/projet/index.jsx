@@ -40,8 +40,8 @@ function Projet() {
     <Container className="mt-4">
       <h2 className="text-center mb-4">Projet {projet.nom}</h2>
       {loading && (
-        <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
+        <div className="spinner-border" role="status">
+          <span className="sr-only">Loading...</span>
         </div>
       )}
       <Card className="shadow-sm">

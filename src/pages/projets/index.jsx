@@ -32,8 +32,8 @@ function Projets({ darkMode }) {
     <Container className="mt-4">
       <h2 className="text-center mb-4">Mes Projets</h2>
       {loading && (
-        <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
+        <div className="spinner-border" role="status">
+          <span className="sr-only">Loading...</span>
         </div>
       )}
       {error && <Alert variant="danger">{error}</Alert>}
@@ -51,7 +51,7 @@ function Projets({ darkMode }) {
                   variant="top"
                   src={projet.image}
                   alt={projet.nom}
-                  className=" img-fluid object-fit-cover"
+                  className=" img-fluid object-fit-contain"
                   style={{
                     width: '100%',
                     height: '200px',
@@ -61,7 +61,9 @@ function Projets({ darkMode }) {
               )}
               <Card.Body className="d-flex flex-column">
                 <div>
-                  <Card.Title>{projet.nom}</Card.Title>
+                  <Card.Title className="text-center fw-bold">
+                    {projet.nom}
+                  </Card.Title>
                 </div>
                 <div>
                   <strong>Catégorie :</strong> {projet.categorie}

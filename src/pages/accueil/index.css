@@ -14,3 +14,13 @@
   align-items: center;
   text-align: center;
 }
+@media (min-width: 576px) {
+  .w-sm-50 {
+    width: 50% !important;
+  }
+}
+@media (min-width: 768px) {
+  .w-md-100 {
+    width: 100% !important;
+  }
+}
