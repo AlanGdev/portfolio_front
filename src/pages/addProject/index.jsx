@@ -68,8 +68,10 @@ const AddProject = () => {
     formData.append('lien_github', lienGithub);
     formData.append('lien_demo', lienDemo);
     formData.append('image', image);
-    formData.append('technologies', JSON.stringify(technologies));
     formData.append('problematics', JSON.stringify(problematics));
+    formData.append('technologies', JSON.stringify(technologies));
+    imagesDetail.forEach((img) => formData.append('images_detail', img));
+    console.log(formData);
 
     try {
       const response = await fetch(`${API_URL}/api/projects`, {
@@ -91,6 +93,7 @@ const AddProject = () => {
       setCategorie('');
       setLienGithub('');
       setLienDemo('');
+      setProblematics([]);
       setTechnologies([]);
       setImage(null);
       setImagesDetail([]);
@@ -112,6 +115,7 @@ const AddProject = () => {
   const handleAddProblematic = () => {
     if (newProb.trim() !== '') {
       setProblematics([...problematics, newProb.trim()]);
+      console.log(problematics);
       setNewProb('');
     }
   };
@@ -223,9 +227,10 @@ const AddProject = () => {
             </Button>
           </div>
           <ul className="mt-2">
-            {technologies.map((tech, index) => (
-              <li key={index}>{tech}</li>
-            ))}
+            {technologies.map((tech, index) => {
+              const nomTech = datas.find((data) => data._id === tech);
+              return <li key={index}>{nomTech.nom}</li>;
+            })}
           </ul>
         </Form.Group>
 

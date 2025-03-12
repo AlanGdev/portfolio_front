@@ -16,19 +16,24 @@ const AddSkill = () => {
 
   useEffect(() => {
     fetch(`${API_URL}/api/projects`)
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.status);
+        }
+        return response.json();
+      })
       .then((data) => setProjets(data))
       .catch((error) =>
         console.error('Erreur lors de la récupération des projets', error)
       );
   }, []);
 
-  const handleAddSkill=()=>{
-    if (newSkill.trim() !==''){
-      setSkills([...skills,newSkill.trim()])
-      setNewSkill('')
+  const handleAddSkill = () => {
+    if (newSkill.trim() !== '') {
+      setSkills([...skills, newSkill.trim()]);
+      setNewSkill('');
     }
-  }
+  };
 
   // Soumission du formulaire
   const handleSubmit = async (e) => {
@@ -49,20 +54,22 @@ const AddSkill = () => {
     };
 
     try {
-      console.log (newCompetence)
+      console.log(newCompetence);
       const response = await fetch(`${API_URL}/api/skills`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
-
         },
         body: JSON.stringify(newCompetence),
       });
 
-      const data=await response.json()
-      if (!response.ok){
-        throw new Error(data.message||"Erreur lors de l'ajout de la compétence");}
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(
+          data.message || "Erreur lors de l'ajout de la compétence"
+        );
+      }
 
       setSuccess('Compétence ajoutée avec succès !');
       setCategorie('');
@@ -70,9 +77,8 @@ const AddSkill = () => {
       setSelectedProjets([]);
       setTimeout(() => {
         navigate('/admin');
-      },2000)
-
-    } catch (error) {
+      }, 2000);
+    } catch (err) {
       setError(err.message || "Erreur lors de l'ajout");
     }
   };
@@ -116,16 +122,16 @@ const AddSkill = () => {
         {/* Sous-compétences (Skills) */}
         <Form.Group className="mb-3">
           <Form.Label>Compétences</Form.Label>
-          <div className='d-flex'> 
-                <Form.Control
-                  type="text"
-                  value={newSkill}
-                  onChange={(e) => setNewSkill(e.target.value)}
-                  placeholder="Ex: Utiliser React Router"
-                />
-          <Button variant="success" onClick={handleAddSkill}>
-            +
-          </Button>
+          <div className="d-flex">
+            <Form.Control
+              type="text"
+              value={newSkill}
+              onChange={(e) => setNewSkill(e.target.value)}
+              placeholder="Ex: Utiliser React Router"
+            />
+            <Button variant="success" onClick={handleAddSkill}>
+              +
+            </Button>
           </div>
           <ul className="mt-2">
             {skills.map((skill, index) => (
