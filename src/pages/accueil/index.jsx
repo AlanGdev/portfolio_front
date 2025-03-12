@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Container,
+  Carousel,
   Row,
   Col,
   Card,
@@ -16,6 +17,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 function Accueil({ darkMode }) {
   const [technologies, setTechnologies] = useState([]);
+  const [projets, setProjets] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -29,7 +31,7 @@ function Accueil({ darkMode }) {
         }
         const data = await response.json();
         setLoading(false);
-        console.log("🔍 Données reçues de l'API :", data);
+        console.log(" Données reçues de l'API :", data);
         setTechnologies(data);
       } catch (err) {
         setLoading(false);
@@ -38,6 +40,26 @@ function Accueil({ darkMode }) {
     };
 
     fetchTechnologies();
+  }, []);
+
+  useEffect(() => {
+    const fetchProjets = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/projects`);
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des projets');
+        }
+        const data = await response.json();
+        setLoading(false);
+        console.log(" Données reçues de l'API :", data);
+        setProjets(data);
+      } catch (err) {
+        setLoading(false);
+        setError(err.message);
+      }
+    };
+
+    fetchProjets();
   }, []);
 
   // Regrouper les technologies par domaine
@@ -88,6 +110,13 @@ function Accueil({ darkMode }) {
           </Row>
         </div>
       </Container>
+
+      <Container>
+        {projets.map((projet) => {
+          <Carousel.Item></Carousel.Item>;
+        })}
+      </Container>
+
       <Container className="mt-4">
         <h2 className="text-center mb-4">Technologies utilisées</h2>
         {loading && (
