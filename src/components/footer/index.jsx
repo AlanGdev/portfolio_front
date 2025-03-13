@@ -15,6 +15,7 @@ const Footer = ({ onLogin, darkMode, isAuthenticated }) => {
         <Link to="https://www.linkedin.com/in/alan-grolleau-55a980a3/?originalSubdomain=fr">
           <FontAwesomeIcon
             icon={faLinkedin}
+            aria-label="Visitez mon compte linkedIn"
             className={`fs-2 text-end ${darkMode ? 'text-light' : 'text-dark'}`}
           />
         </Link>
