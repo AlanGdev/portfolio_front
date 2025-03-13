@@ -12,6 +12,7 @@ import Admin from './pages/admin';
 import AddSkill from './pages/addSkill';
 import AddProject from './pages/addProject';
 import AddTechno from './pages/addTechno';
+import Message from './pages/message';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -60,6 +61,7 @@ function App() {
               <Route path="/admin/add-skill" element={<AddSkill />} />
               <Route path="/admin/add-project" element={<AddProject />} />
               <Route path="/admin/add-techno" element={<AddTechno />} />
+              <Route path="/admin/messages" element={<Message />} />
             </>
           )}
         </Routes>

@@ -103,6 +103,7 @@ function Accueil({ darkMode }) {
             <Col xs={12} md={4}>
               <Image
                 src={imageAlan}
+                alt="Alan Grolleau"
                 className="d-none d-sm-block w-sm-50 w-md-100 rounded-5 m-auto"
                 style={{ objectFit: 'cover' }}
               />
@@ -112,17 +113,29 @@ function Accueil({ darkMode }) {
       </Container>
 
       <Container>
-        <h2 className='text-center mt-5'> Projets </h2>
-        <Carousel  controls={false} indicators={false} data-bs-theme="dark" interval={3500} className='mt-5'>
-        {projets.map((projet) => {
-          return(
-          <Carousel.Item key={projet._id}>
-            <div className='d-flex carousel-item'>
-            <Image src={projet.image} className='mx-auto carousel-img' 
-            onClick={()=>{navigate('/projets')}} />
-            </div>
-          </Carousel.Item>);
-        })}
+        <h2 className="text-center mt-5"> Projets </h2>
+        <Carousel
+          controls={false}
+          indicators={false}
+          data-bs-theme="dark"
+          interval={3500}
+          className="mt-5"
+        >
+          {projets.map((projet) => {
+            return (
+              <Carousel.Item key={projet._id}>
+                <div className="d-flex carousel-item">
+                  <Image
+                    src={projet.image}
+                    className="mx-auto carousel-img"
+                    onClick={() => {
+                      navigate('/projets');
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+            );
+          })}
         </Carousel>
       </Container>
 
@@ -138,7 +151,9 @@ function Accueil({ darkMode }) {
 
         {Object.keys(domaines).map((domaine) => (
           <div key={domaine} className="mb-4">
-            <h3 className={`${darkMode ? 'text-light mb-4' : 'text-dark mb-4'}`}>
+            <h3
+              className={`${darkMode ? 'text-light mb-4' : 'text-dark mb-4'}`}
+            >
               {domaine}
             </h3>
             <Row className="justify-content-start">

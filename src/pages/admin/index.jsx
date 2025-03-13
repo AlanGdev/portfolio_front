@@ -27,6 +27,9 @@ const Admin = ({ isAuthenticated }) => {
         <Button variant="primary" onClick={() => navigate('/admin/add-techno')}>
           Ajouter une techno
         </Button>
+        <Button variant="primary" onClick={() => navigate('/admin/messages')}>
+          Voir les messages
+        </Button>
       </div>
     </Container>
   );

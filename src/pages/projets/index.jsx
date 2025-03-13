@@ -30,7 +30,7 @@ function Projets({ darkMode }) {
 
   return (
     <Container className="mt-4">
-      <h2 className="text-center mb-4">Mes Projets</h2>
+      <h1 className="text-center mb-4">Mes Projets</h1>
       {loading && (
         <div className="spinner-border" role="status">
           <span className="sr-only">Loading...</span>
