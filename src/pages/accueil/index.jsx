@@ -104,7 +104,7 @@ function Accueil({ darkMode }) {
               <Image
                 src={imageAlan}
                 alt="Alan Grolleau"
-                className="d-none d-sm-block w-sm-50 w-md-100 rounded-5 m-auto"
+                className=" imageAlan d-none d-sm-block w-sm-50 w-md-100 rounded-5 m-auto"
                 style={{ objectFit: 'cover' }}
               />
             </Col>

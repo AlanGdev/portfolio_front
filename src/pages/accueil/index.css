@@ -14,14 +14,19 @@
   align-items: center;
   text-align: center;
 }
-.carousel-item{
-  max-height:500px;
+.carousel-item {
+  max-height: 500px;
 }
 .carousel-img {
   object-fit: contain;
-  max-height: 400px ;
+  max-height: 400px;
   width: 100%;
   cursor: pointer;
+}
+
+.imageAlan {
+  max-height: 300px;
+  max-width: 300px;
 }
 @media (min-width: 576px) {
   .w-sm-50 {
