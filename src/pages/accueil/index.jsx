@@ -126,7 +126,9 @@ function Accueil({ darkMode }) {
               <Carousel.Item key={projet._id}>
                 <div className="d-flex carousel-item">
                   <Image
+                    loading="lazy"
                     src={projet.image}
+                    alt={projet.nom}
                     className="mx-auto carousel-img"
                     onClick={() => {
                       navigate('/projets');
@@ -169,6 +171,7 @@ function Accueil({ darkMode }) {
                     className={`technology-card h-100 text-center shadow-sm ${darkMode ? 'bg-secondary text-light border-light' : 'bg-light text-dark border-dark'}`}
                   >
                     <Card.Img
+                      loading="lazy"
                       variant="top"
                       src={tech.image}
                       alt={tech.nom}
