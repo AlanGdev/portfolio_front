@@ -24,6 +24,12 @@ function App() {
     if (token) setIsAuthenticated(true);
   }, []);
 
+  useEffect(() => {
+    const darkMode = localStorage.getItem('darkMode');
+    console.log('darkMode:', darkMode);
+    if (darkMode) setDarkMode(darkMode);
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     setIsAuthenticated(false);

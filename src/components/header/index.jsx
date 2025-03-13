@@ -5,7 +5,10 @@ function Header({ darkMode, setDarkMode }) {
     <header className={darkMode ? 'bg-dark text-light' : 'bg-light text-dark'}>
       <Container className="pt-1 d-flex justify-content-end">
         <Button
-          onClick={() => setDarkMode(!darkMode)}
+          onClick={() => {
+            setDarkMode(!darkMode);
+            localStorage.setItem('darkMode', darkMode);
+          }}
           variant={darkMode ? 'outline-light' : 'outline-dark'}
         >
           {darkMode ? 'Passer en Mode Clair' : 'Passer en Mode Sombre'}
