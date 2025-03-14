@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Container, Alert, Card, Button } from 'react-bootstrap';
+import {
+  Container,
+  Alert,
+  Card,
+  Button,
+  Carousel,
+  Image,
+} from 'react-bootstrap';
+import './index.css';
 const API_URL = import.meta.env.VITE_API_URL;
 
 function Projet() {
@@ -46,16 +54,16 @@ function Projet() {
       )}
       <Card className="shadow-sm">
         {projet.image && (
-          <div className="overflow-auto" style={{ maxHeight: '400px' }}>
+          <div>
             <Card.Img
               variant="top"
               src={projet.image}
               alt={projet.nom}
-              className="object-fit-cover "
+              className="card-image "
             />
           </div>
         )}
-        <Card.Body>
+        <Card.Body className="">
           <Card.Text>{projet.description}</Card.Text>
           <div>
             <strong>Catégorie :</strong> {projet.categorie}
@@ -83,6 +91,15 @@ function Projet() {
           </div>
         </Card.Body>
       </Card>
+      {projet.images_detail && (
+        <Carousel>
+          {projet.images_detail.map((image) => (
+            <Carousel.Item>
+              <Image src={image} className="d-block mx-auto" />
+            </Carousel.Item>
+          ))}
+        </Carousel>
+      )}
     </Container>
   );
 }
