@@ -44,9 +44,9 @@ function Projet() {
   }, [id]);
 
   if (error) return <Alert variant="danger">{error}</Alert>;
-  /*if (!projet) {
+  if (!projet) {
     return <Alert variant="warning">Projet introuvable</Alert>;
-  }*/
+  }
 
   return (
     <Container className="mt-4">
