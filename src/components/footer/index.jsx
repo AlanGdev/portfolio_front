@@ -18,7 +18,8 @@ const Footer = ({ onLogin, darkMode, isAuthenticated }) => {
             aria-label="Visitez mon compte linkedIn"
             className={`fs-2 text-end ${darkMode ? 'text-light' : 'text-dark'}`}
           />
-        </Link>
+          <span className="sr-only">LinkedIn...</span>
+          </Link>
       </div>
 
       <div className="mt-2">

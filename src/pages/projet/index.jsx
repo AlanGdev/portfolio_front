@@ -7,6 +7,10 @@ import {
   Button,
   Carousel,
   Image,
+  Accordion,
+  AccordionItem,
+  AccordionHeader,
+  AccordionBody,
 } from 'react-bootstrap';
 import './index.css';
 const API_URL = import.meta.env.VITE_API_URL;
@@ -40,9 +44,9 @@ function Projet() {
   }, [id]);
 
   if (error) return <Alert variant="danger">{error}</Alert>;
-  if (!projet) {
+  /*if (!projet) {
     return <Alert variant="warning">Projet introuvable</Alert>;
-  }
+  }*/
 
   return (
     <Container className="mt-4">
@@ -69,9 +73,33 @@ function Projet() {
             <strong>Catégorie :</strong> {projet.categorie}
           </div>
           <div>
-            <strong>Technologies :</strong> {projet.technologies.join(', ')}
+            <strong>Technologies :</strong> {projet.technologies.map((tech)=>
+              <Image key={tech.image} src={tech.image}
+              alt={tech.nom} className='tech-image mx-1'/>)}
           </div>
+
           <div className="mt-3">
+          <div>
+            <Accordion defaultActiveKey={null} className='mb-2'>
+              <AccordionItem>
+                <AccordionHeader>Problématiques du projet</AccordionHeader>
+                <AccordionBody>
+                  {projet.problematics.map((problematic)=>(
+                    <div key={problematic}>
+                      <p>{problematic}</p>
+
+                    
+                    <div>bla</div>
+                    <div>bla</div>
+                    <div>bla</div>
+                    </div>
+                  ))}
+                </AccordionBody>
+              </AccordionItem>
+            </Accordion>
+
+          </div>
+
             <a
               href={projet.lien_github}
               target="_blank"
@@ -92,10 +120,10 @@ function Projet() {
         </Card.Body>
       </Card>
       {projet.images_detail && (
-        <Carousel>
+        <Carousel fade interval={3000} controls={false} indicators={false}>
           {projet.images_detail.map((image) => (
-            <Carousel.Item>
-              <Image src={image} className="d-block mx-auto" />
+            <Carousel.Item key={image}>
+              <Image src={image} className="projet-carousel-item d-block mx-auto" />
             </Carousel.Item>
           ))}
         </Carousel>

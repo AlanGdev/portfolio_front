@@ -144,7 +144,7 @@ function Accueil({ darkMode }) {
       <Container className="mt-5">
         <h2 className="text-center mb-4">Technologies utilisées</h2>
         {loading && (
-          <div className="spinner-border" role="status">
+          <div className="spinner-border mx-auto" role="status">
             <span className="sr-only">Loading...</span>
           </div>
         )}
