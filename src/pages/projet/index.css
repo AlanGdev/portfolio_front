@@ -8,5 +8,6 @@
 }
 .projet-carousel-item{
   object-fit: contain;
-  height:400px
+  height:400px;
+  max-width: 100%;
 }
