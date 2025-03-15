@@ -15,7 +15,7 @@ import {
 import './index.css';
 const API_URL = import.meta.env.VITE_API_URL;
 
-function Projet() {
+function Projet({darkMode}) {
   const { id } = useParams();
   console.log(id);
   const [projet, setProjet] = useState(null);
@@ -49,21 +49,21 @@ function Projet() {
   }
 
   return (
-    <Container className="mt-4">
+    <Container className='mt-4'>
       <h2 className="text-center mb-4">Projet {projet.nom}</h2>
       {loading && (
         <div className="spinner-border" role="status">
           <span className="sr-only">Loading...</span>
         </div>
       )}
-      <Card className="shadow-sm">
+      <Card className={`shadow-sm ${darkMode? 'bg-dark text-light': 'bg-light text-dark'}`}>
         {projet.image && (
           <div>
             <Card.Img
               variant="top"
               src={projet.image}
               alt={projet.nom}
-              className="card-image "
+              className="card-image"
             />
           </div>
         )}
@@ -81,7 +81,7 @@ function Projet() {
           <div className="mt-3">
           <div>
             <Accordion defaultActiveKey={null} className='mb-2'>
-              <AccordionItem>
+              <AccordionItem className={`${darkMode ? 'bg-dark text-light':'bg-light text-dark'}`}>
                 <AccordionHeader>Problématiques du projet</AccordionHeader>
                 <AccordionBody>
                   {projet.problematics.map((problematic)=>(

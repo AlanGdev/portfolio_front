@@ -3,7 +3,7 @@ import { Container,Alert,Accordion, } from "react-bootstrap";
 import { Link } from "react-router-dom";
 const API_URL = import.meta.env.VITE_API_URL;
 
-function Apropos() {
+function Apropos({darkMode}) {
   const [loading,setLoading]=useState(true)
   const [skills,setSkills]=useState(null)
   const [error,setError]=useState('')
@@ -30,6 +30,7 @@ useEffect(()=>{
   fetchSkills()
 },[])
 if(error) return <Alert variant='danger'>{error}</Alert>
+if(loading) return <Alert variant='secondary'>Loading...</Alert>
 if(!skills) return <Alert variant='warning'>Compétences introuvables</Alert>
 
   return <>
@@ -40,9 +41,9 @@ if(!skills) return <Alert variant='warning'>Compétences introuvables</Alert>
 
 Curieux de nature et toujours en quête d’amélioration, j’aime relever de nouveaux défis techniques et apprendre de chaque projet. En dehors du code, vous me croiserez peut-être en train de naviguer sur l’eau ou de pédaler sur les sentiers bretons ! À travers ce portfolio, je vous invite à découvrir mes projets et mon approche du développement web.
     </p>
-    <Accordion activeKey={activeKey} onSelect={(key)=>setActiveKey(key)}>
+    <Accordion activeKey={activeKey} onSelect={(key)=>setActiveKey(key)} className="px-4 mt-4">
       {skills.map((skill)=>(
-      <Accordion.Item key={skill.categorie} eventKey={skill.categorie}>
+      <Accordion.Item key={skill.categorie} eventKey={skill.categorie} className={`${darkMode ? 'bg-dark text-light':'bg-light text-dark'}`}>
         <Accordion.Header>
           {skill.categorie}
         </Accordion.Header>
@@ -50,7 +51,8 @@ Curieux de nature et toujours en quête d’amélioration, j’aime relever de n
         {skill.skills.map((skill)=>(
           <p key={skill}>{skill}</p>
         ))}
-        <Link>{skill.projets}</Link>
+        {skill.projets.map((projet)=>(<Link className='d-block' to={`/projets/${projet._id}`} key={projet._id}>{projet.nom}</Link>))}
+        
         </Accordion.Body>
       </Accordion.Item>))}
     </Accordion>
