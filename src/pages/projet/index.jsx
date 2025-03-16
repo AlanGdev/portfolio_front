@@ -87,11 +87,6 @@ function Projet({darkMode}) {
                   {projet.problematics.map((problematic)=>(
                     <div key={problematic}>
                       <p>{problematic}</p>
-
-                    
-                    <div>bla</div>
-                    <div>bla</div>
-                    <div>bla</div>
                     </div>
                   ))}
                 </AccordionBody>
