@@ -27,7 +27,7 @@ function App() {
   useEffect(() => {
     const darkMode = localStorage.getItem('darkMode');
     console.log('darkMode:', darkMode);
-    if (darkMode) setDarkMode(darkMode);
+    if (darkMode === 'true') setDarkMode(darkMode);
   }, []);
 
   const handleLogout = () => {
@@ -54,9 +54,9 @@ function App() {
         )}
         <Routes>
           <Route path="/" element={<Accueil darkMode={darkMode} />} />
-          <Route path="/apropos" element={<Apropos darkMode={darkMode}/>} />
+          <Route path="/apropos" element={<Apropos darkMode={darkMode} />} />
           <Route path="/projets" element={<Projets darkMode={darkMode} />} />
-          <Route path="/projets/:id" element={<Projet darkMode={darkMode}/>} />
+          <Route path="/projets/:id" element={<Projet darkMode={darkMode} />} />
           <Route path="/contact" element={<Contact />} />
           {isAuthenticated && (
             <>

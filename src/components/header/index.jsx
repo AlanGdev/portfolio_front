@@ -6,8 +6,10 @@ function Header({ darkMode, setDarkMode }) {
       <Container className="pt-1 d-flex justify-content-end">
         <Button
           onClick={() => {
-            setDarkMode(!darkMode);
-            localStorage.setItem('darkMode', darkMode);
+            const newDarkMode = !darkMode;
+            console.log(newDarkMode);
+            setDarkMode(newDarkMode);
+            localStorage.setItem('darkMode', newDarkMode);
           }}
           variant={darkMode ? 'outline-light' : 'outline-dark'}
         >
